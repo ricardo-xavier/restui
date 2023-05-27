@@ -1,14 +1,23 @@
 package restui;
 
 import restui.ui.PnlMain;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import javax.swing.*;
 
 public class Main extends JFrame {
     public Main() {
+        DynamoDbClient ddb = DynamoDbClient.builder()
+                .region(Region.SA_EAST_1)
+                .build();
+        DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
+                .dynamoDbClient(ddb)
+                .build();
+
         setTitle("restUI");
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        JPanel pnlMain = new PnlMain().build();
+        JPanel pnlMain = new PnlMain(enhancedClient).build();
         getContentPane().add(pnlMain);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(600, 600);

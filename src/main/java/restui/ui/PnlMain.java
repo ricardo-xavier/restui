@@ -1,51 +1,58 @@
 package restui.ui;
 
+import restui.model.Request;
+import restui.model.UserProject;
+import restui.repository.RequestRepository;
+import restui.repository.UserProjectRepository;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import static restui.Constants.DARK_ORANGE;
 
 public class PnlMain {
+    private static final int HGAP = 10;
+    private static final int VGAP = 5;
+    private final List<UserProject> userProjects;
+    private final DynamoDbEnhancedClient enhancedClient;
+
+    public PnlMain(DynamoDbEnhancedClient enhancedClient) {
+        this.enhancedClient = enhancedClient;
+        UserProjectRepository userProjectRepository = new UserProjectRepository(enhancedClient);
+        userProjects = userProjectRepository.getByUser(System.getenv("USER"));
+    }
+
     public JPanel build() {
-        JPanel pnlUrl = new JPanel(new GridBagLayout());
-        pnlUrl.setBackground(Color.ORANGE);
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(5,5,5,5);
+        JComboBox<String> cbxProjects = new JComboBox<>();
+        userProjects.stream().map(UserProject::getProjectId).forEach(cbxProjects::addItem);
 
-        JComboBox<String> cbxMethods = new JComboBox<>();
-        cbxMethods.addItem("GET");
-        cbxMethods.addItem("POST");
-        cbxMethods.addItem("PUT");
-        cbxMethods.addItem("PATCH");
-        cbxMethods.addItem("DELETE");
-        cbxMethods.setSelectedIndex(0);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0.1;
-        pnlUrl.add(cbxMethods, c);
+        JButton btnOpen = new JButton("Open");
+        btnOpen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                RequestRepository requestRepository = new RequestRepository(enhancedClient);
+                String projectId = (String) cbxProjects.getSelectedItem();
+                List<Request> requests = requestRepository.getByProject(projectId);
+                System.out.println(requests.size());
+                requests.forEach(System.out::println);
+            }
+        });
 
-        JTextField edtUrl = new JTextField();
-        c.gridx = 1;
-        c.gridy = 0;
-        c.weightx = 0.8;
-        pnlUrl.add(edtUrl, c);
+        JButton btnNew = new JButton("New");
 
-        JButton btnCall = new JButton("Call");
-        c.gridx = 2;
-        c.gridy = 0;
-        c.weightx = 0.1;
-        pnlUrl.add(btnCall, c);
-
-        JTabbedPane tabbedPane = new JTabbedPane();
-        PnlRequest pnlRequest = new PnlRequest();
-        tabbedPane.add("Request", pnlRequest.getPanel());
-        PnlResponse pnlResponse = new PnlResponse();
-        tabbedPane.add("Response", pnlResponse.getPanel());
+        JPanel pnlProjects = new JPanel(new FlowLayout(FlowLayout.CENTER, HGAP, VGAP));
+        pnlProjects.setBackground(DARK_ORANGE);
+        pnlProjects.add(cbxProjects);
+        pnlProjects.add(btnOpen);
+        pnlProjects.add(btnNew);
 
         JPanel pnlMain = new JPanel(new BorderLayout());
-        pnlMain.add(pnlUrl, BorderLayout.NORTH);
-        pnlMain.add(tabbedPane, BorderLayout.CENTER);
+        pnlMain.add(pnlProjects, BorderLayout.NORTH);
 
-        btnCall.addActionListener(new CallListener(edtUrl, pnlResponse.getEdtResponse(), tabbedPane));
         return pnlMain;
     }
 }
