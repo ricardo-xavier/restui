@@ -43,6 +43,15 @@ public class PnlSelectRequest {
                         case "GET":
                             pnlCell.setBackground(Color.GREEN);
                             break;
+                        case "POST":
+                            pnlCell.setBackground(Color.BLUE);
+                            break;
+                        case "DELETE":
+                            pnlCell.setBackground(Color.RED);
+                            break;
+                        case "PATCH":
+                            pnlCell.setBackground(Color.MAGENTA);
+                            break;
                     }
                 } else {
                     if (isSelected) {

@@ -17,13 +17,20 @@ public class Caller {
     private HttpResponse<String> httpResponse;
     private long timeMs;
 
-    public void call(String url) {
+    public void call(String method, String url, String body) {
         try {
             long startTime = System.currentTimeMillis();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(url))
-                    .GET()
-                    .build();
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(new URI(url));
+            switch (method) {
+                case "GET":
+                    requestBuilder.GET();
+                    break;
+                case "POST":
+                    requestBuilder.POST(HttpRequest.BodyPublishers.ofString(body));
+                    break;
+            }
+            HttpRequest request = requestBuilder.build();
             HttpClient client = HttpClient.newBuilder().build();
             httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
             long timeMs = System.currentTimeMillis() - startTime;

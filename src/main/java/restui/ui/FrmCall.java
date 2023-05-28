@@ -46,12 +46,12 @@ public class FrmCall extends JFrame {
         pnlUrl.add(btnCall, c);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        PnlRequest pnlRequest = new PnlRequest();
+        PnlRequest pnlRequest = new PnlRequest(request);
         tabbedPane.add("Request", pnlRequest.getPanel());
         PnlResponse pnlResponse = new PnlResponse();
         tabbedPane.add("Response", pnlResponse.getPanel());
 
-        btnCall.addActionListener(new CallListener(edtUrl, pnlResponse, tabbedPane));
+        btnCall.addActionListener(new CallListener((String) cbxMethods.getSelectedItem(), edtUrl.getText(), pnlRequest.getBody(), pnlResponse, tabbedPane));
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(pnlUrl, BorderLayout.NORTH);
