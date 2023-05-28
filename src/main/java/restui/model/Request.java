@@ -8,6 +8,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortK
 public class Request {
     private String projectId;
     private String requestId;
+    private String description;
     private String method;
     private String url;
 
@@ -45,13 +46,11 @@ public class Request {
         this.url = url;
     }
 
-    @Override
-    public String toString() {
-        return "Request{" +
-                "projectId='" + projectId + '\'' +
-                ", requestId='" + requestId + '\'' +
-                ", method='" + method + '\'' +
-                ", url='" + url + '\'' +
-                '}';
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

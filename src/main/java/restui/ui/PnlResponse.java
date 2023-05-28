@@ -3,8 +3,8 @@ package restui.ui;
 import javax.swing.*;
 
 public class PnlResponse {
-    private JScrollPane panel;
-    private JTextArea edtResponse;
+    private final JScrollPane panel;
+    private final JTextArea edtResponse;
 
     public PnlResponse() {
         edtResponse = new JTextArea();

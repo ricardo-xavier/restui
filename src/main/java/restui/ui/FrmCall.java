@@ -1,17 +1,22 @@
 package restui.ui;
 
+import restui.model.Request;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class PnlCall {
+import static restui.Constants.*;
+
+public class FrmCall extends JFrame {
     private static final int GAP = 5;
     private static final double METHODS_WEIGHT = 0.1;
     private static final double URL_WEIGHT = 0.8;
     private static final double BTN_WEIGHT = 0.1;
 
-    public JPanel build() {
+    public FrmCall(DynamoDbEnhancedClient enhancedClient, Request request) {
         JPanel pnlUrl = new JPanel(new GridBagLayout());
-        pnlUrl.setBackground(Color.ORANGE);
+        pnlUrl.setBackground(DARK_ORANGE);
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(GAP, GAP, GAP, GAP);
@@ -22,13 +27,13 @@ public class PnlCall {
         cbxMethods.addItem("PUT");
         cbxMethods.addItem("PATCH");
         cbxMethods.addItem("DELETE");
-        cbxMethods.setSelectedIndex(0);
+        cbxMethods.setSelectedItem(request.getMethod());
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = METHODS_WEIGHT;
         pnlUrl.add(cbxMethods, c);
 
-        JTextField edtUrl = new JTextField();
+        JTextField edtUrl = new JTextField(request.getUrl());
         c.gridx = 1;
         c.gridy = 0;
         c.weightx = URL_WEIGHT;
@@ -46,11 +51,16 @@ public class PnlCall {
         PnlResponse pnlResponse = new PnlResponse();
         tabbedPane.add("Response", pnlResponse.getPanel());
 
-        JPanel pnlCall = new JPanel(new BorderLayout());
-        pnlCall.add(pnlUrl, BorderLayout.NORTH);
-        pnlCall.add(tabbedPane, BorderLayout.CENTER);
-
         btnCall.addActionListener(new CallListener(edtUrl, pnlResponse.getEdtResponse(), tabbedPane));
-        return pnlCall;
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(pnlUrl, BorderLayout.NORTH);
+        panel.add(tabbedPane, BorderLayout.CENTER);
+
+        setTitle(request.getRequestId());
+        getContentPane().add(panel);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setSize(FRM_WIDTH, FRM_HEIGHT);
+        setLocationRelativeTo(null);
     }
 }

@@ -7,9 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CallListener implements ActionListener {
-    private JTextField edtUrl;
-    private JTextArea edtResponse;
-    private JTabbedPane tabbedPane;
+    private final JTextField edtUrl;
+    private final JTextArea edtResponse;
+    private final JTabbedPane tabbedPane;
 
     public CallListener(JTextField edtUrl, JTextArea edtResponse, JTabbedPane tabbedPane) {
         this.edtUrl = edtUrl;

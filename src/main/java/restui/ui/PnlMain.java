@@ -12,21 +12,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import static restui.Constants.DARK_ORANGE;
+import static restui.Constants.*;
 
 public class PnlMain {
-    private static final int HGAP = 10;
-    private static final int VGAP = 5;
-    private final List<UserProject> userProjects;
-    private final DynamoDbEnhancedClient enhancedClient;
+    private final JPanel panel;
+    private final PnlSelectRequest pnlSelectRequest;
 
     public PnlMain(DynamoDbEnhancedClient enhancedClient) {
-        this.enhancedClient = enhancedClient;
+        panel = new JPanel(new BorderLayout());
         UserProjectRepository userProjectRepository = new UserProjectRepository(enhancedClient);
-        userProjects = userProjectRepository.getByUser(System.getenv("USER"));
-    }
+        List<UserProject> userProjects = userProjectRepository.getByUser(System.getenv("USER"));
 
-    public JPanel build() {
         JComboBox<String> cbxProjects = new JComboBox<>();
         userProjects.stream().map(UserProject::getProjectId).forEach(cbxProjects::addItem);
 
@@ -37,8 +33,9 @@ public class PnlMain {
                 RequestRepository requestRepository = new RequestRepository(enhancedClient);
                 String projectId = (String) cbxProjects.getSelectedItem();
                 List<Request> requests = requestRepository.getByProject(projectId);
-                System.out.println(requests.size());
-                requests.forEach(System.out::println);
+                panel.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+                pnlSelectRequest.update(requests);
+                panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
 
@@ -50,9 +47,12 @@ public class PnlMain {
         pnlProjects.add(btnOpen);
         pnlProjects.add(btnNew);
 
-        JPanel pnlMain = new JPanel(new BorderLayout());
-        pnlMain.add(pnlProjects, BorderLayout.NORTH);
+        panel.add(pnlProjects, BorderLayout.NORTH);
+        pnlSelectRequest = new PnlSelectRequest(enhancedClient);
+        panel.add(pnlSelectRequest.getPanel(), BorderLayout.CENTER);
+    }
 
-        return pnlMain;
+    public JPanel getPanel() {
+        return panel;
     }
 }

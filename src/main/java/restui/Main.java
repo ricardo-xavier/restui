@@ -7,6 +7,9 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import javax.swing.*;
 
+import static restui.Constants.FRM_HEIGHT;
+import static restui.Constants.FRM_WIDTH;
+
 public class Main extends JFrame {
     public Main() {
         DynamoDbClient ddb = DynamoDbClient.builder()
@@ -17,10 +20,10 @@ public class Main extends JFrame {
                 .build();
 
         setTitle("restUI");
-        JPanel pnlMain = new PnlMain(enhancedClient).build();
+        JPanel pnlMain = new PnlMain(enhancedClient).getPanel();
         getContentPane().add(pnlMain);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(600, 600);
+        setSize(FRM_WIDTH, FRM_HEIGHT);
         setLocationRelativeTo(null);
     }
 
