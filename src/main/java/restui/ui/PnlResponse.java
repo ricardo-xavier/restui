@@ -41,7 +41,7 @@ public class PnlResponse {
 
     public void setStatus(int statusCode, long timeMs) {
         String s = String.valueOf(statusCode);
-        lblStatus.setText(s + " " + timeMs + "ms");
+        lblStatus.setText(s + " " + timeMs + " ms");
         pnlStatus.setBackground(s.startsWith("2") ? Color.GREEN : Color.RED);
     }
 

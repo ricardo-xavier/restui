@@ -92,7 +92,7 @@ public class PnlSelectRequest {
 
             }
         });
-        tabRequests.setRowHeight(32);
+        tabRequests.setRowHeight(ROW_HEIGHT);
         tabRequests.setDefaultEditor(Object.class, null);
 
         panel.add(tabRequests);
@@ -103,7 +103,7 @@ public class PnlSelectRequest {
         DefaultTableModel tableModel = (DefaultTableModel) tabRequests.getModel();
         tableModel.setRowCount(0);
         requests.stream()
-                .map(request -> new String[] { request.getMethod(), request.getRequestId(), request.getDescription()})
+                .map(request -> new String[] { request.getMethod(), request.getRequestId(), request.getDescription() })
                 .forEach(tableModel::addRow);
         tableModel.fireTableDataChanged();
     }

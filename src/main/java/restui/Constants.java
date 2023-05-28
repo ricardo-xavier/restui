@@ -9,4 +9,6 @@ public class Constants {
     public static final int FRM_HEIGHT = 600;
     public static final int HGAP = 5;
     public static final int VGAP = 5;
+    public static final int ROW_HEIGHT = 32;
+
 }

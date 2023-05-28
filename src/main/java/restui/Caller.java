@@ -33,7 +33,7 @@ public class Caller {
             HttpRequest request = requestBuilder.build();
             HttpClient client = HttpClient.newBuilder().build();
             httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
-            long timeMs = System.currentTimeMillis() - startTime;
+            timeMs = System.currentTimeMillis() - startTime;
         } catch (IOException | URISyntaxException | InterruptedException e) {
             e.printStackTrace();
         }
