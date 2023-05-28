@@ -51,7 +51,7 @@ public class FrmCall extends JFrame {
         PnlResponse pnlResponse = new PnlResponse();
         tabbedPane.add("Response", pnlResponse.getPanel());
 
-        btnCall.addActionListener(new CallListener(edtUrl, pnlResponse.getEdtResponse(), tabbedPane));
+        btnCall.addActionListener(new CallListener(edtUrl, pnlResponse, tabbedPane));
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(pnlUrl, BorderLayout.NORTH);
