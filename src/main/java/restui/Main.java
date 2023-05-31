@@ -24,6 +24,7 @@ public class Main extends JFrame {
         getContentPane().add(pnlMain);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(FRM_WIDTH, FRM_HEIGHT);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
     }
 

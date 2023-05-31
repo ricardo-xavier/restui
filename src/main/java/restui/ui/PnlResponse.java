@@ -13,14 +13,14 @@ public class PnlResponse {
 
     public PnlResponse() {
         edtResponse = new JTextArea();
-        JScrollPane scrollResponse = new JScrollPane(edtResponse);
+        JScrollPane spResponse = new JScrollPane(edtResponse);
 
         edtHeaders = new JTextArea();
-        JScrollPane scrollHeaders = new JScrollPane(edtHeaders);
+        JScrollPane spHeaders = new JScrollPane(edtHeaders);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.add("Body", scrollResponse);
-        tabbedPane.add("Headers", scrollHeaders);
+        tabbedPane.add("Body", spResponse);
+        tabbedPane.add("Headers", spHeaders);
 
         lblStatus = new JLabel();
         pnlStatus = new JPanel();
@@ -43,6 +43,7 @@ public class PnlResponse {
         String s = String.valueOf(statusCode);
         lblStatus.setText(s + " " + timeMs + " ms");
         pnlStatus.setBackground(s.startsWith("2") ? Color.GREEN : Color.RED);
+        lblStatus.setForeground(s.startsWith("2") ? Color.BLACK : Color.WHITE);
     }
 
     public void setHeaders(HttpHeaders headers) {

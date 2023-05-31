@@ -42,8 +42,13 @@ public class Caller {
     public String getBody() {
         String json = httpResponse.body();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonElement jsonElement = JsonParser.parseString(json);
-        return gson.toJson(jsonElement);
+        try {
+            JsonElement jsonElement = JsonParser.parseString(json);
+            return gson.toJson(jsonElement);
+        } catch (Exception e) {
+            return json;
+        }
+
     }
 
     public int getStatusCode() {

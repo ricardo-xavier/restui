@@ -1,5 +1,6 @@
 package restui.ui;
 
+import restui.model.ProjectEnv;
 import restui.model.Request;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 
@@ -15,19 +16,20 @@ import java.util.List;
 import static restui.Constants.*;
 
 public class PnlSelectRequest {
-    private final JPanel panel;
+    private final JScrollPane panel;
     private final JTable tabRequests;
     private List<Request> requests;
+    private List<ProjectEnv> envs;
 
     public PnlSelectRequest(DynamoDbEnhancedClient enhancedClient)  {
-        panel = new JPanel();
-
         tabRequests = new JTable();
         String[] columns = { "Method", "RequestId", "Description" };
         TableModel tableModel = new DefaultTableModel(columns, 0);
         tabRequests.setModel(tableModel);
         tabRequests.getColumnModel().getColumn(0).setPreferredWidth(100);
+        tabRequests.getColumnModel().getColumn(0).setMaxWidth(150);
         tabRequests.getColumnModel().getColumn(1).setPreferredWidth(200);
+        tabRequests.getColumnModel().getColumn(1).setMaxWidth(300);
         tabRequests.getColumnModel().getColumn(2).setPreferredWidth(400);
         tabRequests.setDefaultRenderer(Object.class, new TableCellRenderer() {
             @Override
@@ -67,7 +69,7 @@ public class PnlSelectRequest {
             public void mouseClicked(MouseEvent mouseEvent) {
                 Request request = requests.get(tabRequests.getSelectedRow());
                 if (mouseEvent.getClickCount() == 2) {
-                    FrmCall frmCall = new FrmCall(enhancedClient, request);
+                    FrmCall frmCall = new FrmCall(enhancedClient, request, envs);
                     frmCall.setVisible(true);
                 }
             }
@@ -94,12 +96,12 @@ public class PnlSelectRequest {
         });
         tabRequests.setRowHeight(ROW_HEIGHT);
         tabRequests.setDefaultEditor(Object.class, null);
-
-        panel.add(tabRequests);
+        panel = new JScrollPane(tabRequests);
     }
 
-    public void update(List<Request> requests) {
+    public void update(List<Request> requests, List<ProjectEnv> envs) {
         this.requests = requests;
+        this.envs = envs;
         DefaultTableModel tableModel = (DefaultTableModel) tabRequests.getModel();
         tableModel.setRowCount(0);
         requests.stream()
@@ -108,7 +110,7 @@ public class PnlSelectRequest {
         tableModel.fireTableDataChanged();
     }
 
-    public JPanel getPanel() {
+    public JScrollPane getPanel() {
         return panel;
     }
 }

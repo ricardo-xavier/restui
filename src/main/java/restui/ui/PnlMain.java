@@ -1,7 +1,9 @@
 package restui.ui;
 
+import restui.model.ProjectEnv;
 import restui.model.Request;
 import restui.model.UserProject;
+import restui.repository.ProjectEnvRepository;
 import restui.repository.RequestRepository;
 import restui.repository.UserProjectRepository;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
@@ -30,11 +32,16 @@ public class PnlMain {
         btnOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                RequestRepository requestRepository = new RequestRepository(enhancedClient);
                 String projectId = (String) cbxProjects.getSelectedItem();
+
+                RequestRepository requestRepository = new RequestRepository(enhancedClient);
                 List<Request> requests = requestRepository.getByProject(projectId);
+
+                ProjectEnvRepository projectEnvRepository = new ProjectEnvRepository(enhancedClient);
+                List<ProjectEnv> envs = projectEnvRepository.getByProject(projectId);
+
                 panel.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-                pnlSelectRequest.update(requests);
+                pnlSelectRequest.update(requests, envs);
                 panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });

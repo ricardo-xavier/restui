@@ -12,7 +12,7 @@ public class PnlRequest {
 
     public PnlRequest(Request request)  {
         edtBody = new JTextArea(request.getBody());
-        JScrollPane scrollBody = new JScrollPane(edtBody);
+        JScrollPane spBody = new JScrollPane(edtBody);
 
         pnlRequestParams = new PnlRequestParams(request.getParams());
         PnlRequestHeaders pnlRequestHeaders = new PnlRequestHeaders();
@@ -20,7 +20,7 @@ public class PnlRequest {
         panel = new JTabbedPane();
         panel.add("Params", pnlRequestParams.getPanel());
         panel.add("Headers", pnlRequestHeaders.getPanel());
-        panel.add("Body", scrollBody);
+        panel.add("Body", spBody);
     }
 
     public JTabbedPane getPanel() {
