@@ -12,18 +12,13 @@ import java.util.List;
 import static restui.Constants.*;
 
 public class FrmCall extends JFrame {
-    private static final int GAP = 5;
-    private static final double ENV_WEIGHT = 0.1;
-    private static final double METHODS_WEIGHT = 0.1;
-    private static final double URL_WEIGHT = 0.7;
-    private static final double BTN_WEIGHT = 0.1;
-
     public FrmCall(DynamoDbEnhancedClient enhancedClient, Request request, List<ProjectEnv> envs) {
-        JPanel pnlUrl = new JPanel(new GridBagLayout());
-        pnlUrl.setBackground(DARK_ORANGE);
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(GAP, GAP, GAP, GAP);
+        JPanel pnlUrl = new JPanel(new BorderLayout());
+        pnlUrl.setBorder(BorderFactory.createLineBorder(DARK_ORANGE, 3));
+
+        JPanel pnlLeft = new JPanel(new FlowLayout());
+
+        JPanel pnlCenter = new JPanel(new GridLayout());
 
         JComboBox<String> cbxEnv = new JComboBox<>();
         cbxEnv.addItem("LOC");
@@ -33,10 +28,7 @@ public class FrmCall extends JFrame {
         if (env == null) {
             env = "LOC";
         }
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = ENV_WEIGHT;
-        pnlUrl.add(cbxEnv, c);
+        pnlLeft.add(cbxEnv);
 
         JComboBox<String> cbxMethods = new JComboBox<>();
         cbxMethods.addItem("GET");
@@ -45,22 +37,15 @@ public class FrmCall extends JFrame {
         cbxMethods.addItem("PATCH");
         cbxMethods.addItem("DELETE");
         cbxMethods.setSelectedItem(request.getMethod());
-        c.gridx = 1;
-        c.gridy = 0;
-        c.weightx = METHODS_WEIGHT;
-        pnlUrl.add(cbxMethods, c);
+        pnlLeft.add(cbxMethods);
+        pnlUrl.add(pnlLeft, BorderLayout.WEST);
 
         JTextField edtUrl = new JTextField(request.getUrl());
-        c.gridx = 2;
-        c.gridy = 0;
-        c.weightx = URL_WEIGHT;
-        pnlUrl.add(edtUrl, c);
+        pnlCenter.add(edtUrl);
+        pnlUrl.add(pnlCenter, BorderLayout.CENTER);
 
         JButton btnCall = new JButton("Call");
-        c.gridx = 3;
-        c.gridy = 0;
-        c.weightx = BTN_WEIGHT;
-        pnlUrl.add(btnCall, c);
+        pnlUrl.add(btnCall, BorderLayout.EAST);
 
         JTabbedPane tabbedPane = new JTabbedPane();
         PnlRequest pnlRequest = new PnlRequest(request);

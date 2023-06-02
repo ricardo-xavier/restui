@@ -3,6 +3,7 @@ package restui.repository;
 import restui.model.ProjectEnv;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
@@ -29,5 +30,10 @@ public class ProjectEnvRepository {
 
         PageIterable<ProjectEnv> pagedResults = table.query(tableQuery);
         return pagedResults.items().stream().collect(Collectors.toList());
+    }
+
+    public ProjectEnv getByProjectAndId(String projectId, String envId) {
+        DynamoDbTable<ProjectEnv> table = enhancedClient.table("PROJECT_ENVS", TableSchema.fromBean(ProjectEnv.class));
+        return table.getItem(Key.builder().partitionValue(projectId).sortValue(envId).build());
     }
 }

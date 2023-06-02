@@ -34,7 +34,7 @@ public class PnlSelectRequest {
         tabRequests.setDefaultRenderer(Object.class, new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                JPanel pnlCell = new JPanel(new BorderLayout(HGAP, VGAP));
+                JPanel pnlCell = new JPanel(new BorderLayout(5, 5));
                 if (requests == null) {
                     return pnlCell;
                 }
