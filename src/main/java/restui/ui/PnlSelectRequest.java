@@ -31,6 +31,9 @@ public class PnlSelectRequest {
         tabRequests.getColumnModel().getColumn(1).setPreferredWidth(200);
         tabRequests.getColumnModel().getColumn(1).setMaxWidth(300);
         tabRequests.getColumnModel().getColumn(2).setPreferredWidth(400);
+        tabRequests.setRowHeight(ROW_HEIGHT);
+        tabRequests.setDefaultEditor(Object.class, null);
+
         tabRequests.setDefaultRenderer(Object.class, new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -94,8 +97,6 @@ public class PnlSelectRequest {
 
             }
         });
-        tabRequests.setRowHeight(ROW_HEIGHT);
-        tabRequests.setDefaultEditor(Object.class, null);
         panel = new JScrollPane(tabRequests);
     }
 

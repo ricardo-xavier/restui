@@ -36,4 +36,14 @@ public class ProjectEnvRepository {
         DynamoDbTable<ProjectEnv> table = enhancedClient.table("PROJECT_ENVS", TableSchema.fromBean(ProjectEnv.class));
         return table.getItem(Key.builder().partitionValue(projectId).sortValue(envId).build());
     }
+
+    public void update(ProjectEnv projectEnv) {
+        boolean exists = getByProjectAndId(projectEnv.getProjectId(), projectEnv.getEnvId()) != null;
+        DynamoDbTable<ProjectEnv> table = enhancedClient.table("PROJECT_ENVS", TableSchema.fromBean(ProjectEnv.class));
+        if (exists) {
+            table.updateItem(projectEnv);
+        } else {
+            table.putItem(projectEnv);
+        }
+    }
 }

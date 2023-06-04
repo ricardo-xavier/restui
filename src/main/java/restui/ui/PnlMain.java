@@ -84,7 +84,7 @@ public class PnlMain {
                     projectEnv.setEnvId(envId);
                     projectEnv.setVariables(new HashMap<>());
                 }
-                new FrmEnv(projectEnv).setVisible(true);
+                new FrmEnv(enhancedClient, projectEnv).setVisible(true);
             }
         });
 
